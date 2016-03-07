@@ -5,9 +5,19 @@
               [accountant.core :as accountant]))
 
 ;; -------------------------
-;; State
+;; State Management
 
-(def app-state (atom {:doc {} :saved? false}))
+(def app-state (atom
+  {:doc {}
+    :saved? false
+    :page-state {}
+    :all-pieces [
+      {:title "Silence of the Lambda"
+       :desc "I ate his clojure with some java beans and a nice chianti"
+       :price 5000}
+      {:title "Lambda and Goliath"
+       :desc "Details the epic battle between the lambda and the giant Orange"
+       :price nil}]}))
 
 (defn set-value! [id value]
   (swap! app-state assoc :saved? false)
@@ -16,17 +26,38 @@
 (defn get-value [id]
   (get-in @app-state [:doc id]))
 
+(defn add-piece [piece]
+  (swap! app-state update-in [:all-pieces] conj piece))
+
 
 ;; -------------------------
 ;; Components
 
-(defn text-input [id label]
-  [:row label
+(defn form-input [tag inp-type id label]
+  [tag label
    [:input
-     {:type "text"
+     {:type inp-type
        :class "form-control"
        :value (get-value id)
        :on-change #(set-value! id (-> % .-target .-value))}]])
+
+(defn text-input [id label]
+  (form-input :row "text" id label))
+
+(defn num-input [id label]
+  (form-input :row "number" id label))
+
+(defn art-piece [piece]
+  [:div.art-piece
+   [:img.art-image {:src "http://media.moddb.com/cache/images/mods/1/15/14206/thumb_620x2000/oplamlogo.png"}]
+   [:div.art-title (:title piece)]
+   [:div.art-desc (:desc piece)]
+   [:div.art-price (or (:price piece) "Unk")]
+  ])
+
+(defn pieces-component []
+  [:ul (for [piece (:all-pieces @app-state)]
+         [:li (art-piece piece)])])
 
 ;; -------------------------
 ;; Views
@@ -42,11 +73,20 @@
    [:div [:a {:href "/art"} "go to art page"]]])
 
 (defn art-index-page []
-    [:div [:h2 "Stagistry Art!"]]
-    [:div [:form
-     [:p (text-input :piece-name "Piece Name")]
-     [:p (get-value :piece-name)]
-     [:p "Description"] [:textarea {:type "text"}]]])
+    [:div
+      [:div [:a {:href "/"} "go to the home page"]]
+      [:div [:a {:href "/about"} "go to about page"]]
+      [:div [:h2 "Stagistry Art!"]]
+      [:div [:form
+       [:p (text-input :title "Title")]
+       [:p (text-input :desc "Description")]
+       [:p (num-input :price "Price")]
+       [:input {:type "button"
+                 :class "btn btn-default"
+                 :onClick #(add-piece (:doc @app-state))
+                 :value "FOOSBAR"}]]]
+      [:div (pieces-component)]]
+  )
 
 (defn current-page []
   [:div [(session/get :current-page)]])
@@ -79,7 +119,5 @@
        (secretary/locate-route path))})
   (accountant/dispatch-current!)
   (mount-root))
-
-(def state (atom {}))
 
 
