@@ -27,9 +27,9 @@
 (defn get-value [id]
   (get-in @app-state [:doc id]))
 
-(defn add-piece [piece]
-  (POST "/art" :params piece)
-  (swap! app-state update-in [:all-pieces] #(into [] (cons %2 %1)) piece))
+(defn add-piece []
+  (POST "/art" :params (:doc @app-state))
+  (swap! app-state update-in [:all-pieces] #(into [] (cons %2 %1)) (:doc @app-state)))
 
 ;; -------------------------
 ;; Components
@@ -84,7 +84,7 @@
      [:p (num-input :price "Price")]
      [:input {:type "button"
                :class "btn btn-default"
-               :onClick #(add-piece (:doc @app-state))
+               :onClick #(add-piece)
                :value "Add Piece"}]]]
    [:div (pieces-component)]])
 

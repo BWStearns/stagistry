@@ -29,7 +29,7 @@
   (GET "/" [] loading-page)
   (GET "/about" [] loading-page)
   (GET "/art" [] loading-page)
-  (POST "/art" [] loading-page) ;{:sent (:body request) :hello "Asshole"})
+  (POST "/art" [] (fn [req] {:status 200 :body {:foo (str req)}}))
 
   (resources "/")
   (not-found "Not Found"))
