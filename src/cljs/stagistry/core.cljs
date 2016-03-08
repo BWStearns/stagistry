@@ -1,5 +1,6 @@
 (ns stagistry.core
     (:require [reagent.core :as reagent :refer [atom]]
+              [ajax.core :refer [POST GET]]
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
               [accountant.core :as accountant]))
@@ -27,8 +28,8 @@
   (get-in @app-state [:doc id]))
 
 (defn add-piece [piece]
-  (swap! app-state update-in [:all-pieces] conj piece))
-
+  (POST "/art" :params piece)
+  (swap! app-state update-in [:all-pieces] #(into [] (cons %2 %1)) piece))
 
 ;; -------------------------
 ;; Components
@@ -73,20 +74,19 @@
    [:div [:a {:href "/art"} "go to art page"]]])
 
 (defn art-index-page []
-    [:div
-      [:div [:a {:href "/"} "go to the home page"]]
-      [:div [:a {:href "/about"} "go to about page"]]
-      [:div [:h2 "Stagistry Art!"]]
-      [:div [:form
-       [:p (text-input :title "Title")]
-       [:p (text-input :desc "Description")]
-       [:p (num-input :price "Price")]
-       [:input {:type "button"
-                 :class "btn btn-default"
-                 :onClick #(add-piece (:doc @app-state))
-                 :value "FOOSBAR"}]]]
-      [:div (pieces-component)]]
-  )
+  [:div
+   [:div [:a {:href "/"} "go to the home page"]]
+   [:div [:a {:href "/about"} "go to about page"]]
+   [:div [:h2 "Stagistry Art!"]]
+   [:div [:form
+     [:p (text-input :title "Title")]
+     [:p (text-input :desc "Description")]
+     [:p (num-input :price "Price")]
+     [:input {:type "button"
+               :class "btn btn-default"
+               :onClick #(add-piece (:doc @app-state))
+               :value "Add Piece"}]]]
+   [:div (pieces-component)]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])

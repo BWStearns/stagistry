@@ -1,8 +1,9 @@
 (ns stagistry.handler
-  (:require [compojure.core :refer [GET defroutes]]
+  (:require [compojure.core :refer [GET POST defroutes]]
             [compojure.route :refer [not-found resources]]
             [hiccup.page :refer [include-js include-css html5]]
             [stagistry.middleware :refer [wrap-middleware]]
+            [clojure.pprint :refer [pprint]]
             [environ.core :refer [env]]))
 
 (def mount-target
@@ -28,6 +29,7 @@
   (GET "/" [] loading-page)
   (GET "/about" [] loading-page)
   (GET "/art" [] loading-page)
+  (POST "/art" [] loading-page) ;{:sent (:body request) :hello "Asshole"})
 
   (resources "/")
   (not-found "Not Found"))
