@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS art_pieces
 (
   -- Art Data
-  ID INT PRIMARY KEY NOT NULL,
-  name CHAR(200) NOT NULL,
+  ID SERIAL PRIMARY KEY,
+  title TEXT NOT NULL,
   description TEXT,
   price INT NULL,
 
@@ -16,6 +16,6 @@ CREATE TABLE IF NOT EXISTS art_pieces
 CREATE TABLE IF NOT EXISTS artists
 (
   -- Art Data
-  ID INT PRIMARY KEY NOT NULL,
-  name CHAR(200) NOT NULL
+  ID SERIAL PRIMARY KEY,
+  name TEXT NOT NULL
 );

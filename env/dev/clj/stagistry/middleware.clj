@@ -8,3 +8,9 @@
       (wrap-defaults api-defaults)
       wrap-exceptions
       wrap-reload))
+
+(defn wrap-api-middleware [handler]
+  (-> handler
+      api-defaults
+      wrap-exceptions
+      wrap-reload))

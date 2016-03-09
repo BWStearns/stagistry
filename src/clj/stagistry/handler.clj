@@ -2,7 +2,7 @@
   (:require [compojure.core :refer [GET POST defroutes]]
             [compojure.route :refer [not-found resources]]
             [hiccup.page :refer [include-js include-css html5]]
-            [stagistry.middleware :refer [wrap-middleware]]
+            [stagistry.middleware :refer [wrap-middleware wrap-api-middleware]]
             [stagistry.query :refer [create-piece all-pieces]]
             [clojure.pprint :refer [pprint]]
             [environ.core :refer [env]]))
@@ -26,16 +26,36 @@
      (include-js "/js/app.js")]))
 
 
+
 (defroutes routes
   (GET "/" [] loading-page)
   (GET "/about" [] loading-page)
   (GET "/art" [] loading-page)
 
-
   (POST "/art" [] (fn [req] {:status 200 :body {:foo (str req)}}))
-  (GET "/art/pieces" [] (fn [req] {:status 200 :body (all-pieces)}))
+  (GET "/art/pieces" [] (all-pieces))
 
   (resources "/")
   (not-found "Not Found"))
 
 (def app (wrap-middleware #'routes))
+
+
+
+;; (defroutes routes
+;;   (GET "/" [] loading-page)
+;;   (GET "/about" [] loading-page)
+;;   (GET "/art" [] loading-page)
+
+;;   (POST "/art" [] (fn [req] {:status 200 :body {:foo (str req)}}))
+;;   (GET "/art/pieces" [] (all-pieces))
+
+;;   (resources "/")
+;;   (not-found "Not Found"))
+
+;; ;; (defroutes api-routes
+;; ;;   (POST "/art" [] (fn [req] {:status 200 :body {:foo (str req)}}))
+;; ;;   (GET "/art/pieces" [] (all-pieces)))
+
+;; ;; (def app (wrap-middleware #'routes))
+;; (def app (wrap-api-middleware #'routes))

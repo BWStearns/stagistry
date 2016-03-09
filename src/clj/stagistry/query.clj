@@ -16,7 +16,7 @@
   (table :art_pieces)
   (entity-fields
     :id
-    :name
+    :title
     :description
     :price
     :artists_id)
@@ -31,18 +31,13 @@
 ;; QUERIES
 
 (defn all-pieces []
-  (select art-pieces
-          (fields
-            :id
-            :name
-            :description
-            :price)))
+  (select art-pieces))
 
 (defn create-piece [piece]
   (insert art-pieces
           (values {
                     :id (:id piece)
-                    :name (:name piece)
+                    :title (:title piece)
                     :description (:description piece)
                     :price (:price piece)})))
 

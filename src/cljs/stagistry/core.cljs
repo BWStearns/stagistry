@@ -6,19 +6,21 @@
               [accountant.core :as accountant]))
 
 ;; -------------------------
+;; Remote Data
+
+(defn all-pieces []
+  (GET "/art/pieces"))
+
+;; -------------------------
 ;; State Management
+
+(.log js/console (all-pieces))
 
 (def app-state (atom
   {:doc {}
     :saved? false
     :page-state {}
-    :all-pieces [
-      {:title "Silence of the Lambda"
-       :desc "I ate his clojure with some java beans and a nice chianti"
-       :price 5000}
-      {:title "Lambda and Goliath"
-       :desc "Details the epic battle between the lambda and the giant Orange"
-       :price nil}]}))
+    :all-pieces [(all-pieces)]}))
 
 (defn set-value! [id value]
   (swap! app-state assoc :saved? false)
@@ -52,7 +54,7 @@
   [:div.art-piece
    [:img.art-image {:src "http://media.moddb.com/cache/images/mods/1/15/14206/thumb_620x2000/oplamlogo.png"}]
    [:div.art-title (:title piece)]
-   [:div.art-desc (:desc piece)]
+   [:div.art-description (:description piece)]
    [:div.art-price (or (:price piece) "Unk")]
   ])
 
@@ -80,7 +82,7 @@
    [:div [:h2 "Stagistry Art!"]]
    [:div [:form
      [:p (text-input :title "Title")]
-     [:p (text-input :desc "Description")]
+     [:p (text-input :description "description")]
      [:p (num-input :price "Price")]
      [:input {:type "button"
                :class "btn btn-default"
