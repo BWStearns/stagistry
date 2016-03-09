@@ -30,7 +30,7 @@
                   :exclusions [org.clojure/tools.reader]]]
 
   :migratus {
-           :migration-dir "/resources/migrations"
+           :migration-dir "migrations"
            :store :database
            :db {:classname "com.postgres.jdbc.Driver"
                 :subprotocol "postgresql"
@@ -102,7 +102,7 @@
                                            org.clojure/clojurescript
                                            org.clojure/core.async
                                            org.clojure/tools.analyzer.jvm]]
-                             [migratus-lein "0.1.0"]
+                             [migratus-lein "0.2.5"]
                              ]
 
                    :injections [(require 'pjstadig.humane-test-output)

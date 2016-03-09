@@ -1,4 +1,4 @@
-CREATE TABLE art-pieces
+CREATE TABLE IF NOT EXISTS art_pieces
 (
   -- Art Data
   ID INT PRIMARY KEY NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE art-pieces
 
 --;;
 
-CREATE TABLE artists
+CREATE TABLE IF NOT EXISTS artists
 (
   -- Art Data
   ID INT PRIMARY KEY NOT NULL,
