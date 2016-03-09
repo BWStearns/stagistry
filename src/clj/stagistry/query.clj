@@ -1,14 +1,14 @@
 (ns stagistry.query
-  (:require [stagistry.database]
-            [korma.core :refer :all]))
+  (:require [korma.core :refer :all]))
 
+(use 'korma.db)
+(require '[clojure.string :as str])
 
 
 (defdb db (postgres {:db "stagistry"
                      :user "postgres"}))
 
-(use 'korma.db)
-(require '[clojure.string :as str])
+(declare artists art-pieces)
 
 ;; ENTITIES
 

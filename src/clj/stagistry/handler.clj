@@ -3,6 +3,7 @@
             [compojure.route :refer [not-found resources]]
             [hiccup.page :refer [include-js include-css html5]]
             [stagistry.middleware :refer [wrap-middleware]]
+            [stagistry.query :refer [create-piece all-pieces]]
             [clojure.pprint :refer [pprint]]
             [environ.core :refer [env]]))
 
@@ -29,7 +30,10 @@
   (GET "/" [] loading-page)
   (GET "/about" [] loading-page)
   (GET "/art" [] loading-page)
+
+
   (POST "/art" [] (fn [req] {:status 200 :body {:foo (str req)}}))
+  (GET "/art/pieces" [] (fn [req] {:status 200 :body (all-pieces)}))
 
   (resources "/")
   (not-found "Not Found"))
