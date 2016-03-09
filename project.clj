@@ -14,6 +14,13 @@
                  [ring "1.4.0"]
                  [ring/ring-defaults "0.1.5"]
                  [compojure "1.5.0"]
+
+                 ;; DB STUFF
+                 [korma "0.4.0"]
+                 [migratus "0.8.13"]
+                 [org.clojure/java.jdbc "0.4.2"]
+                 [org.postgresql/postgresql "9.2-1002-jdbc4"]
+
                  [hiccup "1.0.5"]
                  [environ "1.0.2"]
                  [org.clojure/clojurescript "1.7.228"
@@ -21,6 +28,15 @@
                  [secretary "1.2.3"]
                  [venantius/accountant "0.1.7"
                   :exclusions [org.clojure/tools.reader]]]
+
+  :migratus {
+           :migration-dir "/resources/migrations"
+           :store :database
+           :db {:classname "com.postgres.jdbc.Driver"
+                :subprotocol "postgresql"
+                :subname "//localhost:5432/stagistry"
+                :user "postgres"}}
+
 
   :plugins [[lein-environ "1.0.2"]
             [lein-cljsbuild "1.1.1"]
@@ -86,6 +102,7 @@
                                            org.clojure/clojurescript
                                            org.clojure/core.async
                                            org.clojure/tools.analyzer.jvm]]
+                             [migratus-lein "0.1.0"]
                              ]
 
                    :injections [(require 'pjstadig.humane-test-output)
@@ -99,7 +116,8 @@
                               :css-dirs ["resources/public/css"]
                               :ring-handler stagistry.handler/app}
 
-                   :env {:dev true}
+                   :env {:dev true
+                         :database-url "postgres://postgres@localhost/stagistry"}
 
                    :cljsbuild {:builds {:app {:source-paths ["env/dev/cljs"]
                                               :compiler {:main "stagistry.dev"
