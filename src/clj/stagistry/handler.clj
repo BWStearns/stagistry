@@ -2,7 +2,7 @@
   (:require [compojure.core :refer [GET POST defroutes]]
             [compojure.route :refer [not-found resources]]
             [hiccup.page :refer [include-js include-css html5]]
-            [stagistry.middleware :refer [wrap-middleware wrap-api-middleware]]
+            [stagistry.middleware :refer [wrap-middleware]]
             [stagistry.query :refer [create-piece all-pieces]]
             [clojure.pprint :refer [pprint]]
             [environ.core :refer [env]]))

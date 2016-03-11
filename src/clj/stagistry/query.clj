@@ -36,7 +36,6 @@
 (defn create-piece [piece]
   (insert art-pieces
           (values {
-                    :id (:id piece)
                     :title (:title piece)
                     :description (:description piece)
                     :price (:price piece)})))

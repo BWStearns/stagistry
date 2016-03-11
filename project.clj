@@ -13,6 +13,7 @@
                  [reagent-utils "0.1.7"]
                  [ring "1.4.0"]
                  [ring/ring-defaults "0.1.5"]
+                 [ring/ring-json "0.4.0"]
                  [compojure "1.5.0"]
 
                  ;; DB STUFF

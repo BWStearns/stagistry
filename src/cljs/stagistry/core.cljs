@@ -8,19 +8,26 @@
 ;; -------------------------
 ;; Remote Data
 
-(defn all-pieces []
-  (GET "/art/pieces"))
+;; (defn all-pieces [handler]
+;;   (GET "/art/pieces" {:handler handler}))
 
 ;; -------------------------
 ;; State Management
-
-(.log js/console (all-pieces))
 
 (def app-state (atom
   {:doc {}
     :saved? false
     :page-state {}
-    :all-pieces [(all-pieces)]}))
+    :all-pieces {}}))
+
+
+(defn pieces-handler [pcs]
+  (swap! app-state assoc :all-pieces pcs))
+
+(defn fetch-pieces []
+  (GET "/art/pieces" {:handler pieces-handler}))
+
+(fetch-pieces)
 
 (defn set-value! [id value]
   (swap! app-state assoc :saved? false)
@@ -59,6 +66,10 @@
   ])
 
 (defn pieces-component []
+  (println "pieces")
+  (println (:all-pieces @app-state))
+  (println "pieces")
+  (println (count (:all-pieces @app-state)))
   [:ul (for [piece (:all-pieces @app-state)]
          [:li (art-piece piece)])])
 
@@ -121,5 +132,14 @@
        (secretary/locate-route path))})
   (accountant/dispatch-current!)
   (mount-root))
+
+
+
+
+
+
+
+
+
 
 
