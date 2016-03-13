@@ -8,7 +8,7 @@
   (-> handler
       (wrap-defaults api-defaults)
       wrap-exceptions
-      (json-middleware/wrap-json-body {:keywords? false})
+      (json-middleware/wrap-json-body {:keywords? true})
 ;;       json-middleware/wrap-json-response
       wrap-reload))
 

@@ -22,10 +22,11 @@
 
 
 (defn pieces-handler [pcs]
-  (swap! app-state assoc :all-pieces pcs))
+  (println (js->clj pcs))
+  (swap! app-state assoc :all-pieces (js->clj (str "[" pcs "]"))))
 
 (defn fetch-pieces []
-  (GET "/art/pieces" {:handler pieces-handler}))
+  (GET "/art/pieces" {:handler pieces-handler :format :json}))
 
 (fetch-pieces)
 

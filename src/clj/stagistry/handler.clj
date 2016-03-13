@@ -33,7 +33,7 @@
   (GET "/art" [] loading-page)
 
   (POST "/art" [] (fn [req] {:status 200 :body {:foo (str req)}}))
-  (GET "/art/pieces" [] (all-pieces))
+  (GET "/art/pieces" [] {:body (all-pieces) :format :json})
 
   (resources "/")
   (not-found "Not Found"))
