@@ -22,11 +22,10 @@
 
 
 (defn pieces-handler [pcs]
-  (println (js->clj pcs))
-  (swap! app-state assoc :all-pieces (js->clj (str "[" pcs "]"))))
+  (swap! app-state assoc :all-pieces pcs))
 
 (defn fetch-pieces []
-  (GET "/art/pieces" {:handler pieces-handler :format :json}))
+  (GET "/art/pieces" {:handler pieces-handler :response-format :json}))
 
 (fetch-pieces)
 
@@ -59,18 +58,15 @@
   (form-input :row "number" id label))
 
 (defn art-piece [piece]
+  (println (get piece "title"))
   [:div.art-piece
    [:img.art-image {:src "http://media.moddb.com/cache/images/mods/1/15/14206/thumb_620x2000/oplamlogo.png"}]
-   [:div.art-title (:title piece)]
-   [:div.art-description (:description piece)]
-   [:div.art-price (or (:price piece) "Unk")]
+   [:div.art-title (get piece "title")]
+   [:div.art-description (get piece "description")]
+   [:div.art-price (or (get piece "price") "Unk")]
   ])
 
 (defn pieces-component []
-  (println "pieces")
-  (println (:all-pieces @app-state))
-  (println "pieces")
-  (println (count (:all-pieces @app-state)))
   [:ul (for [piece (:all-pieces @app-state)]
          [:li (art-piece piece)])])
 
@@ -88,6 +84,7 @@
    [:div [:a {:href "/art"} "go to art page"]]])
 
 (defn art-index-page []
+  (println (str "SHIT: " (:title (first (:all-pieces @app-state)))))
   [:div
    [:div [:a {:href "/"} "go to the home page"]]
    [:div [:a {:href "/about"} "go to about page"]]

@@ -32,30 +32,11 @@
   (GET "/about" [] loading-page)
   (GET "/art" [] loading-page)
 
-  (POST "/art" [] (fn [req] {:status 200 :body {:foo (str req)}}))
-  (GET "/art/pieces" [] {:body (all-pieces) :format :json})
+;;   (POST "/art" [] (fn [req] {:status 200 :body {:foo (str req)}}))
+  (GET "/art/pieces" [] (all-pieces))
 
   (resources "/")
   (not-found "Not Found"))
 
 (def app (wrap-middleware #'routes))
 
-
-
-;; (defroutes routes
-;;   (GET "/" [] loading-page)
-;;   (GET "/about" [] loading-page)
-;;   (GET "/art" [] loading-page)
-
-;;   (POST "/art" [] (fn [req] {:status 200 :body {:foo (str req)}}))
-;;   (GET "/art/pieces" [] (all-pieces))
-
-;;   (resources "/")
-;;   (not-found "Not Found"))
-
-;; ;; (defroutes api-routes
-;; ;;   (POST "/art" [] (fn [req] {:status 200 :body {:foo (str req)}}))
-;; ;;   (GET "/art/pieces" [] (all-pieces)))
-
-;; ;; (def app (wrap-middleware #'routes))
-;; (def app (wrap-api-middleware #'routes))
